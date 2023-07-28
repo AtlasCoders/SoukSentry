@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "prices")
@@ -17,6 +18,8 @@ public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long priceId;
+
+    private UUID uuid;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
