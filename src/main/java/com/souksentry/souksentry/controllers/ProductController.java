@@ -1,20 +1,25 @@
 package com.souksentry.souksentry.controllers;
 
+import com.souksentry.souksentry.dao.MarketRepo;
 import com.souksentry.souksentry.models.Product;
 import com.souksentry.souksentry.services.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Slf4j
 public class ProductController {
 
     @Autowired
     private  ProductService productService;
+
 
     @GetMapping("/api/products")
     public List<Product> getAllProducts() {
@@ -34,7 +39,6 @@ public class ProductController {
     @PostMapping("/api/products")
     public ResponseEntity<Product> addNewProduct(@RequestBody Product product) {
         Product newProduct = productService.addProduct(product);
-        // Return the newly created product with appropriate HTTP status
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
 
@@ -57,4 +61,18 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/api/products/market/{marketId}")
+    public ResponseEntity<List<Product>> getProductsForMarket(@PathVariable UUID marketUuid) {
+        try {
+            List<Product> productsInMarket = productService.getProductsForMarket(marketUuid);
+            if (productsInMarket != null) {
+                return ResponseEntity.ok(productsInMarket);
+            }
+        } catch (FileNotFoundException ex) {
+            log.error("The market wasn't found.", ex);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

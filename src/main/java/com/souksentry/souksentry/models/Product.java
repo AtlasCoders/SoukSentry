@@ -26,10 +26,4 @@ public class Product {
 
     private String brand;
     private String description;
-
-    @Column(name = "created_at")
-    private Instant createdAt;
-
-    @Column(name = "updated_at")
-    private Instant updatedAt;
 }
