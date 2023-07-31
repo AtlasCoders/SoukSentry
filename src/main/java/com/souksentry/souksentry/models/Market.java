@@ -26,6 +26,6 @@ public class Market {
     private UUID uuid;
 
     @OneToMany
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     private List<Product> productList;
 }
