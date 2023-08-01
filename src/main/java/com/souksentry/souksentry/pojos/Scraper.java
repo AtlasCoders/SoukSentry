@@ -1,4 +1,4 @@
-package com.souksentry.souksentry.interfaces;
+package com.souksentry.souksentry.pojos;
 
 public interface Scraper {
     void runAndSaveData();
