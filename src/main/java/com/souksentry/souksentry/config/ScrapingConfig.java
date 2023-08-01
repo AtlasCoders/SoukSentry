@@ -1,20 +1,31 @@
 package com.souksentry.souksentry.config;
 
+import com.souksentry.souksentry.pojos.Scraper;
 import com.souksentry.souksentry.services.ScraperService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-@Configuration
-public class ScrapingConfig {
+import java.util.List;
 
-    @Value("${souksentry.scraping.interval}")
-    private long scrapingInterval;
+@Configuration
+@EnableScheduling
+public class ScrapingConfig {
 
     @Autowired
     private ScraperService scraperService;
 
-// add scheduled job to run scrapers
+    private final List<Scraper> listOfScrapers;
 
+    public ScrapingConfig(List<Scraper> listOfScrapers) {
+        this.listOfScrapers = listOfScrapers;
+    }
+
+    @Scheduled(cron = "${souksentry.scraper.cron.interval}")
+    public void scheduleFixedDelayTask() {
+        for(Scraper scraper : listOfScrapers) {
+            scraper.runAndSaveData();
+        }
+    }
 }

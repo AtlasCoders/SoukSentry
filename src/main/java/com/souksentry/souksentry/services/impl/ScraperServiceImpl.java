@@ -8,17 +8,7 @@ import java.util.List;
 
 @Service
 public class ScraperServiceImpl implements ScraperService {
-
-        private final List<Scraper> listOfScrapers;
-
-        public ScraperServiceImpl(List<Scraper> listOfScrapers) {
-            this.listOfScrapers = listOfScrapers;
-        }
-
-        public void runAllScrapers() {
-            for( Scraper scraper : listOfScrapers) {
-                scraper.runAndSaveData();
-            }
-
-        }
+    // will be used to create additional scrapers?
+    // programmatically?
+    // meaning we will take the list of scrapers to spawn from the db?
 }
